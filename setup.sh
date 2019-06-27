@@ -15,7 +15,7 @@ echo "interface wlan0" >> /etc/dhcpcd.conf
 echo "    static ip_address=192.168.100.1/24" >> /etc/dhcpcd.conf
 echo "    nohook wpa_supplicant" >> /etc/dhcpcd.conf
 
-echo DAEMON_CONF="/etc/hostapd/hostapd.conf" >> /etc/default/hostapd
+echo DAEMON_CONF=\"/etc/hostapd/hostapd.conf\" >> /etc/default/hostapd
 
 sed -i -e "s/<AP_SSID>/$AP_SSID/g" etc/hostapd/hostapd.conf
 sed -i -e "s/<AP_PASSWORD>/$AP_PASSWORD/g" etc/hostapd/hostapd.conf
@@ -41,10 +41,13 @@ cp etc/wireguard/pinet.conf /etc/wireguard/pinet.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
 
+systemctl unmask hostapd
 systemctl enable hostapd
 systemctl enable dnsmasq
 systemctl enable dhcpcd
+systemctl enable wg-quick@pinet
 
-systemctl start hostapd
-systemctl start dnsmasq
-systemctl start dhcpcd
+systemctl restart hostapd
+systemctl restart dnsmasq
+systemctl restart dhcpcd
+systemctl restart wg-quick@pinet
