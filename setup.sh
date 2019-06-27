@@ -50,5 +50,8 @@ sed -i -e "s/<WLAN_IFACE>/$WLAN_IFACE/g" etc/wireguard/pinet.conf
 sed -i -e "s/<ENDPOINT_HOST>/$ENDPOINT_HOST/g" etc/wireguard/pinet.conf
 sed -i -e "s/<ENDPOINT_PORT>/$ENDPOINT_PORT/g" etc/wireguard/pinet.conf
 cp etc/wireguard/pinet.conf /etc/wireguard/pinet.conf
-systemctl enable wg-quick@pinet
-systemctl restart wg-quick@pinet
+cp lib/systemd/system/pinet.service /lib/systemd/system/pinet.service
+cp etc/wg.sh /etc/wg.sh
+chmod +x /etc/wg.sh
+cp etc/wgoff.sh /etc/wgoff.sh
+chmod +x /etc/wgoff.sh
