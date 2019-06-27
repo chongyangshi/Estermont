@@ -9,7 +9,7 @@ WLAN_IFACE="WLAN_INTERFACE_ID"
 ENDPOINT_HOST="WIREGUARD_REMOTE_HOST"
 ENDPOINT_PORT="WIREGUARD_REMOTE_PORT"
 
-apt install dnsmasq hostapd
+apt install dnsmasq hostapd -y
 
 echo "interface wlan0" >> /etc/dhcpcd.conf
 echo "    static ip_address=192.168.100.1/24" >> /etc/dhcpcd.conf
@@ -40,6 +40,8 @@ cp etc/wireguard/pinet.conf /etc/wireguard/pinet.conf
 
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
+
+systemctl daemon-reload
 
 systemctl unmask hostapd
 systemctl enable hostapd
