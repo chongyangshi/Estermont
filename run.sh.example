@@ -21,7 +21,7 @@ echo "dhcp-range=192.168.100.2,192.168.100.100,255.255.255.0,24h" >> /etc/dnsmas
 systemctl reload dnsmasq
 systemctl enable dnsmasq
 
-echo "interface wlan0" >> /etc/dhcpcd.conf
+echo "interface $WLAN_IFACE" >> /etc/dhcpcd.conf
 echo "    static ip_address=192.168.100.1/24" >> /etc/dhcpcd.conf
 echo "    nohook wpa_supplicant" >> /etc/dhcpcd.conf
 systemctl restart dhcpcd
@@ -29,10 +29,14 @@ systemctl restart dhcpcd
 echo DAEMON_CONF=\"/etc/hostapd/hostapd.conf\" >> /etc/default/hostapd
 sed -i -e "s/<AP_SSID>/$AP_SSID/g" etc/hostapd/hostapd.conf
 sed -i -e "s/<AP_PASSWORD>/$AP_PASSWORD/g" etc/hostapd/hostapd.conf
+sed -i -e "s/<WLAN_IFACE>/$WLAN_IFACE/g" etc/hostapd/hostapd.conf
 cp etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
 systemctl unmask hostapd
 systemctl enable hostapd
 systemctl start hostapd
+
+sed -i -e "s/<WLAN_IFACE>/$WLAN_IFACE/g" etc/dnsmasq.conf
+cp etc/dnsmasq.conf /etc/dnsmasq.conf
 
 apt install raspberrypi-kernel-headers -y
 echo "deb http://deb.debian.org/debian/ unstable main" | sudo tee --append /etc/apt/sources.list.d/unstable.list
