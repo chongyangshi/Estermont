@@ -9,7 +9,7 @@ WLAN_IFACE="WLAN_INTERFACE_ID"
 ENDPOINT_HOST="WIREGUARD_REMOTE_HOST"
 ENDPOINT_PORT="WIREGUARD_REMOTE_PORT"
 
-apt install dnsmasq hostapd -y
+apt install dnsmasq libssl-dev hostapd -y
 
 echo "interface $WLAN_IFACE" >> /etc/dhcpcd.conf
 echo "    static ip_address=192.168.100.1/24" >> /etc/dhcpcd.conf
@@ -35,8 +35,8 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
 apt update
 apt install build-essential pkg-config libmnl-dev libelf-dev wireguard -y
 
-sed -i -e "s/<WG_PRIVKEY>/$WG_PRIVKEY/g" etc/wireguard/pinet.conf
-sed -i -e "s/<WG_PUBKEY>/$WG_PUBKEY/g" etc/wireguard/pinet.conf
+sed -i -e "s|<WG_PRIVKEY>|$WG_PRIVKEY|g" etc/wireguard/pinet.conf
+sed -i -e "s|<WG_PUBKEY>|$WG_PUBKEY|g" etc/wireguard/pinet.conf
 sed -i -e "s/<WLAN_IFACE>/$WLAN_IFACE/g" etc/wireguard/pinet.conf
 sed -i -e "s/<ENDPOINT_HOST>/$ENDPOINT_HOST/g" etc/wireguard/pinet.conf
 sed -i -e "s/<ENDPOINT_PORT>/$ENDPOINT_PORT/g" etc/wireguard/pinet.conf
